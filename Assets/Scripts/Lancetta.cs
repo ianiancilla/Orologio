@@ -4,27 +4,45 @@ using UnityEngine;
 
 public class Lancetta : MonoBehaviour
 {
-    private bool VengoTrascinata { get; set; }
+    public enum TipiDiLancetta { Ore = 0, Minuti = 1 }
+    [SerializeField] TipiDiLancetta tipo = TipiDiLancetta.Ore;
+
     private float _angoloCorrente;
+    private bool stoVenendoTrascinata = false;
+    
+    // cache
+    private Orologio orologio;
 
     void Start()
     {
+        // cache
+        orologio = transform.parent.GetComponent<Orologio>();
+
         SetAngoloLancetta(0);
-        VengoTrascinata = false;
     }
-
-    void Update()
+    private void Update()
     {
-        // TODO check, se ci clicchi sopra lo attivi
-        VengoTrascinata = Input.GetMouseButton(0);
-
-        if (VengoTrascinata)
+        ControllaSeTrascinata();
+        if (!stoVenendoTrascinata)
         {
-            SeguiMouse();
+            SeguiAltraLancetta();
         }
-        Debug.Log("angolo corrente " + _angoloCorrente);
     }
-
+    private void OnMouseDrag()
+    {
+        stoVenendoTrascinata = true;
+        SeguiMouse();
+    }
+    private void ControllaSeTrascinata()
+    {
+        if (stoVenendoTrascinata)
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                stoVenendoTrascinata = false;
+            }
+        }
+    }
     private void SeguiMouse()
     {
         // determina vettore direzione mouse
@@ -55,7 +73,27 @@ public class Lancetta : MonoBehaviour
 
         SetAngoloLancetta(nuovoAngolo);
     }
-
+    private void SeguiAltraLancetta()
+    {
+        switch (tipo)
+        {
+            case TipiDiLancetta.Ore:
+                OreSeguonoMinuti();
+                break;
+            case TipiDiLancetta.Minuti:
+                MinutiSeguonoOre();
+                break;
+        }
+    }
+    private void OreSeguonoMinuti()
+    {
+        int oraTonda = this.GetValoreInteroCorrente();
+        int minuti = orologio.lancettaMinuti.GetValoreInteroCorrente();
+        orologio.SetOrario(oraTonda, minuti);
+    }
+    private void MinutiSeguonoOre()
+    {
+    }
     public void SetAngoloLancetta(float nuovoAngolo)
     {
         // check che sia inferiore a 360°
@@ -68,9 +106,29 @@ public class Lancetta : MonoBehaviour
         float targetRotazioneZ;
         targetRotazioneZ = 360 - nuovoAngolo;
         targetRotazioneZ += 90;
-        targetRotazioneZ = targetRotazioneZ % 360;
+        targetRotazioneZ %= 360;
 
         // sposta la lancetta nella nuova posizione
         transform.rotation = Quaternion.Euler(0, 0, targetRotazioneZ);
+    }
+    
+    public float GetAngoloLancetta() { return _angoloCorrente; }
+    public int GetValoreInteroCorrente()
+    {
+        int valoreCorrente;
+        switch (tipo)
+        {
+            case TipiDiLancetta.Ore:
+                valoreCorrente = (int)GetAngoloLancetta() / 30;
+                break;
+            case TipiDiLancetta.Minuti:
+                valoreCorrente = (int)GetAngoloLancetta() / 6;
+                break;
+            default:
+                valoreCorrente = 0;
+                Debug.Log("Non hai assegnato un tipo corretto a una delle lancette dell'orologio.");
+                break;
+        }
+        return valoreCorrente;
     }
 }

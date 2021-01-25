@@ -18,8 +18,8 @@ public class Orologio : MonoBehaviour
     [SerializeField] Color coloreLancettaMinuti = Color.green;
 
     // member variables
-    Lancetta lancettaOre;
-    Lancetta lancettaMinuti;
+    public Lancetta lancettaOre;
+    public Lancetta lancettaMinuti;
 
     // Start is called before the first frame update
     void Start()
@@ -58,5 +58,14 @@ public class Orologio : MonoBehaviour
             SpriteRenderer renderer = transform.Find(NOME_CENTRO_OROLOGIO).GetComponent<SpriteRenderer>();
             renderer.sprite = spriteCentroOrologio;
         }
+    }
+
+    public void SetOrario(int ore, int minuti)
+    {
+        float angoloLancettaOre = (ore * 30) + (minuti / 2);
+        lancettaOre.SetAngoloLancetta(angoloLancettaOre);
+
+        float angoloLancettaMinuti = minuti * 6;
+        lancettaMinuti.SetAngoloLancetta(angoloLancettaMinuti);
     }
 }
