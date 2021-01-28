@@ -193,7 +193,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -91820757
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: dd2fc0996970d0344bfd13c9ff90da5b, type: 3}
   m_Color: {r: 0.0588235, g: 0.17121077, b: 0.9607843, a: 1}
   m_FlipX: 0
@@ -309,6 +309,8 @@ MonoBehaviour:
   spriteCentroOrologio: {fileID: 21300000, guid: 5b920875ffaed1e4faefc04604da3e0f, type: 3}
   coloreLancettaOre: {r: 0.6792453, g: 0.12495552, b: 0.12495552, a: 1}
   coloreLancettaMinuti: {r: 0.10902457, g: 0.4716981, b: 0.10902457, a: 1}
+  lancettaOre: {fileID: 0}
+  lancettaMinuti: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,10 +436,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 866873872}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34282ccdce3b0814390a81c6c4e67f21, type: 3}
+  m_Script: {fileID: 11500000, guid: 5588dd88d32538f4cb9a9add5c16075e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tipo: 0
+  orologio: {fileID: 0}
 --- !u!61 &866873875
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -506,10 +508,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1215522593}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34282ccdce3b0814390a81c6c4e67f21, type: 3}
+  m_Script: {fileID: 11500000, guid: cf2035605ba55aa4193166e0674ad262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tipo: 1
+  orologio: {fileID: 0}
 --- !u!61 &1215522596
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -606,7 +608,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -91820757
   m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: dd2fc0996970d0344bfd13c9ff90da5b, type: 3}
   m_Color: {r: 0.9607843, g: 0.67104524, b: 0.0588235, a: 1}
   m_FlipX: 0
@@ -688,7 +690,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -91820757
   m_SortingLayer: 1
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

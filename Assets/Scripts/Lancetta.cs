@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lancetta : MonoBehaviour
+public abstract class Lancetta : MonoBehaviour
 {
-    public enum TipiDiLancetta { Ore = 0, Minuti = 1 }
-    [SerializeField] TipiDiLancetta tipo = TipiDiLancetta.Ore;
+    protected float _angoloCorrente;
+    protected bool stoVenendoTrascinata = false;
+    public abstract int GradiPerScattoLancetta { get; }
 
-    private float _angoloCorrente;
-    private bool stoVenendoTrascinata = false;
-    
     // cache
-    private Orologio orologio;
+    public Orologio orologio;
 
-    void Start()
+    // *** CALLBACK METODS ***
+    protected void Start()
     {
         // cache
         orologio = transform.parent.GetComponent<Orologio>();
 
         SetAngoloLancetta(0);
     }
-    private void Update()
+    protected void Update()
     {
         ControllaSeTrascinata();
         if (!stoVenendoTrascinata)
@@ -28,31 +27,34 @@ public class Lancetta : MonoBehaviour
             SeguiAltraLancetta();
         }
     }
-    private void OnMouseDrag()
+    protected void OnMouseDrag()
     {
         stoVenendoTrascinata = true;
         SeguiMouse();
     }
-    private void ControllaSeTrascinata()
+
+    // *** PRIVATE METODS ***
+    protected void ControllaSeTrascinata()
     {
         if (stoVenendoTrascinata)
         {
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0))    // TODO funziona solo con il mouse, trovare alternativa
             {
                 stoVenendoTrascinata = false;
             }
         }
     }
-    private void SeguiMouse()
+    protected void SeguiMouse()
     {
         // determina vettore direzione mouse
-        Vector3 posizioneMouseRaw = Input.mousePosition;
+        Vector3 posizioneMouseRaw = Input.mousePosition;    // TODO funziona solo con il mouse, trovare alternativa
         Vector3 posizioneMouseScena = Camera.main.ScreenToWorldPoint(posizioneMouseRaw);
 
         Vector2 direzioneMouse = new Vector2(posizioneMouseScena.x,
                                              posizioneMouseScena.y).normalized;
 
-        // allinea oggetto alla direzione del mouse
+        // Trova angolo di rotazione sull#asse Z per l'oggetto.
+        // Lo fa usando il il fatto che il valore Y è uguale al seno dell'angolo conmpreso tra asse X e vettore posizione.
         float targetRotazioneZ;
         if (direzioneMouse.x > 0)
         {
@@ -73,28 +75,14 @@ public class Lancetta : MonoBehaviour
 
         SetAngoloLancetta(nuovoAngolo);
     }
-    private void SeguiAltraLancetta()
-    {
-        switch (tipo)
-        {
-            case TipiDiLancetta.Ore:
-                OreSeguonoMinuti();
-                break;
-            case TipiDiLancetta.Minuti:
-                MinutiSeguonoOre();
-                break;
-        }
-    }
-    private void OreSeguonoMinuti()
-    {
-        int oraTonda = this.GetValoreInteroCorrente();
-        int minuti = orologio.lancettaMinuti.GetValoreInteroCorrente();
-        orologio.SetOrario(oraTonda, minuti);
-    }
-    private void MinutiSeguonoOre()
-    {
-    }
-    public void SetAngoloLancetta(float nuovoAngolo)
+
+    // *** PUBLIC METODS ***
+    /// <summary>
+    /// Dato un angolo in gradi superiore a 0, ruota la lancetta in senso orario di quell'angolo.
+    /// A un angolo di 0 (o 360, 720...) la lancetta sarà vertocale sulle ore 12 dell'orologio.
+    /// </summary>
+    /// <param name="nuovoAngolo">float, superiore a 0</param>
+    public virtual void SetAngoloLancetta(float nuovoAngolo)
     {
         // check che sia inferiore a 360°
         nuovoAngolo = nuovoAngolo % 360;
@@ -111,24 +99,27 @@ public class Lancetta : MonoBehaviour
         // sposta la lancetta nella nuova posizione
         transform.rotation = Quaternion.Euler(0, 0, targetRotazioneZ);
     }
-    
-    public float GetAngoloLancetta() { return _angoloCorrente; }
+
+    /// <summary>
+    /// Ritorna l'angolo in gradi a cui è correntemente posizionata la lancetta.
+    /// Se è posizionata in verticale, ritornerà 360. L'angolazione la fa avanazare in senso orario.
+    /// </summary>
+    /// <returns>float compresa tra 0(escluso) e 360</returns>
+    public virtual float GetAngoloLancetta() { return _angoloCorrente; }
+
+    /// <summary>
+    /// Ritorna il valore corrente intero della lancetta.
+    /// Se una lancetta dei minuti viene posizioneta a 91°, ritornerà "15".
+    /// Se una lancetta delle ore viene posizionata a 91°, ritoernerà "3".
+    /// </summary>
+    /// <returns>Il valore intero di ore/minuti a cui è correntemente posizionata la lancetta.</returns>
     public int GetValoreInteroCorrente()
     {
         int valoreCorrente;
-        switch (tipo)
-        {
-            case TipiDiLancetta.Ore:
-                valoreCorrente = (int)GetAngoloLancetta() / 30;
-                break;
-            case TipiDiLancetta.Minuti:
-                valoreCorrente = (int)GetAngoloLancetta() / 6;
-                break;
-            default:
-                valoreCorrente = 0;
-                Debug.Log("Non hai assegnato un tipo corretto a una delle lancette dell'orologio.");
-                break;
-        }
+        valoreCorrente = (int)GetAngoloLancetta() / GradiPerScattoLancetta;
         return valoreCorrente;
     }
+
+    public abstract void SeguiAltraLancetta();
+
 }

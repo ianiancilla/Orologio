@@ -25,17 +25,12 @@ public class Orologio : MonoBehaviour
     void Start()
     {
         // cache
-        lancettaOre = transform.Find(NOME_LANCETTA_ORE).GetComponent<Lancetta>();
-        lancettaMinuti = transform.Find(NOME_LANCETTA_MINUTI).GetComponent<Lancetta>();
+        lancettaOre = transform.Find(NOME_LANCETTA_ORE).GetComponent<LancettaOre>();
+        lancettaMinuti = transform.Find(NOME_LANCETTA_MINUTI).GetComponent<LancettaMinuti>();
 
         SetupAspettoOrologio();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void SetupAspettoOrologio()
     {
@@ -59,13 +54,13 @@ public class Orologio : MonoBehaviour
             renderer.sprite = spriteCentroOrologio;
         }
     }
-
     public void SetOrario(int ore, int minuti)
     {
-        float angoloLancettaOre = (ore * 30) + (minuti / 2);
+        float angoloLancettaOre = (ore * lancettaOre.GradiPerScattoLancetta) 
+                                  + (minuti / 2);
         lancettaOre.SetAngoloLancetta(angoloLancettaOre);
 
-        float angoloLancettaMinuti = minuti * 6;
+        float angoloLancettaMinuti = minuti * lancettaMinuti.GradiPerScattoLancetta;
         lancettaMinuti.SetAngoloLancetta(angoloLancettaMinuti);
     }
 }
