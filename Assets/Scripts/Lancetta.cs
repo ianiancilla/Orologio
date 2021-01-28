@@ -7,11 +7,12 @@ public abstract class Lancetta : MonoBehaviour
     protected float _angoloCorrente;
     protected bool stoVenendoTrascinata = false;
     public abstract int GradiPerScattoLancetta { get; }
+    public abstract int NumeroScattiSuOrologio { get; }
 
     // cache
     public Orologio orologio;
 
-    // *** CALLBACK METODS ***
+    // *** CALLBACK METHODS ***
     protected void Start()
     {
         // cache
@@ -21,11 +22,7 @@ public abstract class Lancetta : MonoBehaviour
     }
     protected void Update()
     {
-        ControllaSeTrascinata();
-        if (!stoVenendoTrascinata)
-        {
-            SeguiAltraLancetta();
-        }
+        GestisciFineTrascinamento();
     }
     protected void OnMouseDrag()
     {
@@ -33,18 +30,20 @@ public abstract class Lancetta : MonoBehaviour
         SeguiMouse();
     }
 
-    // *** PRIVATE METODS ***
-    protected void ControllaSeTrascinata()
+    // *** PRIVATE METHODS ***
+    protected void GestisciFineTrascinamento()
     {
         if (stoVenendoTrascinata)
         {
             if (Input.GetMouseButtonUp(0))    // TODO funziona solo con il mouse, trovare alternativa
             {
                 stoVenendoTrascinata = false;
+                orologio.SetOrario(orologio.lancettaOre.GetValoreInteroCorrente(),
+                                   orologio.lancettaMinuti.GetValoreInteroCorrente());
             }
         }
     }
-    protected void SeguiMouse()
+    protected virtual void SeguiMouse()
     {
         // determina vettore direzione mouse
         Vector3 posizioneMouseRaw = Input.mousePosition;    // TODO funziona solo con il mouse, trovare alternativa
@@ -75,8 +74,35 @@ public abstract class Lancetta : MonoBehaviour
 
         SetAngoloLancetta(nuovoAngolo);
     }
+    protected void ArrotondaInGiu()
+    {
+        SetValoreIntero(GetValoreInteroCorrente());
+    }
+    protected void ArrotondaInSu()
+    {
+        SetValoreIntero(GetValoreInteroCorrente() + 1);
+    }
+    protected void ArrotondaAScattoPiuVicino()
+    {
+        float scarto = GetAngoloLancetta() % GradiPerScattoLancetta;
+        if (scarto <= (GradiPerScattoLancetta / 2))
+        {
+            ArrotondaInGiu();
+        }
+        else
+        {
+            ArrotondaInSu();
+        }
+    }
 
-    // *** PUBLIC METODS ***
+    // *** PUBLIC METHODS ***
+    /// <summary>
+    /// Ritorna l'angolo in gradi a cui è correntemente posizionata la lancetta.
+    /// Se è posizionata in verticale, ritornerà 360. L'angolazione la fa avanazare in senso orario.
+    /// </summary>
+    /// <returns>float compresa tra 0(escluso) e 360</returns>
+    public virtual float GetAngoloLancetta() { return _angoloCorrente; }
+
     /// <summary>
     /// Dato un angolo in gradi superiore a 0, ruota la lancetta in senso orario di quell'angolo.
     /// A un angolo di 0 (o 360, 720...) la lancetta sarà vertocale sulle ore 12 dell'orologio.
@@ -101,13 +127,6 @@ public abstract class Lancetta : MonoBehaviour
     }
 
     /// <summary>
-    /// Ritorna l'angolo in gradi a cui è correntemente posizionata la lancetta.
-    /// Se è posizionata in verticale, ritornerà 360. L'angolazione la fa avanazare in senso orario.
-    /// </summary>
-    /// <returns>float compresa tra 0(escluso) e 360</returns>
-    public virtual float GetAngoloLancetta() { return _angoloCorrente; }
-
-    /// <summary>
     /// Ritorna il valore corrente intero della lancetta.
     /// Se una lancetta dei minuti viene posizioneta a 91°, ritornerà "15".
     /// Se una lancetta delle ore viene posizionata a 91°, ritoernerà "3".
@@ -115,11 +134,19 @@ public abstract class Lancetta : MonoBehaviour
     /// <returns>Il valore intero di ore/minuti a cui è correntemente posizionata la lancetta.</returns>
     public int GetValoreInteroCorrente()
     {
-        int valoreCorrente;
-        valoreCorrente = (int)GetAngoloLancetta() / GradiPerScattoLancetta;
+        int valoreCorrente = (int)GetAngoloLancetta() / GradiPerScattoLancetta;
         return valoreCorrente;
     }
 
-    public abstract void SeguiAltraLancetta();
+    /// <summary>
+    /// Sposta la lancetta sul valore intero specificato.
+    /// Es: se viene dato un valore "4" alla lancetta delle ore, andrà sul 4. Se le viene dato 16, anche.
+    /// </summary>
+    /// <param name="valore"></param>
+    public void SetValoreIntero(int valore)
+    {
+        float angolo = valore * GradiPerScattoLancetta;
+        SetAngoloLancetta(angolo);
+    }
 
 }

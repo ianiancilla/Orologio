@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class LancettaMinuti : Lancetta
 {
-    public override int GradiPerScattoLancetta
-    {
-        get { return 360/60; }
-    }
+    public override int NumeroScattiSuOrologio { get { return 60; } }
+    public override int GradiPerScattoLancetta { get { return 360/ NumeroScattiSuOrologio; } }
 
-    // *** PUBLIC METODS ***
-    public override void SeguiAltraLancetta()
+    // *** PRIVATE METHODS ***
+    protected override void SeguiMouse()
     {
-        //int oraTonda = orologio.lancettaOre.GetValoreInteroCorrente();
-        //int minuti = this.GetValoreInteroCorrente();
-        //orologio.SetOrario(oraTonda, minuti);
+        base.SeguiMouse();
+        ArrotondaAScattoPiuVicino();
     }
 }

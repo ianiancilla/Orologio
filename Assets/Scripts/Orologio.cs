@@ -31,7 +31,6 @@ public class Orologio : MonoBehaviour
         SetupAspettoOrologio();
     }
 
-
     private void SetupAspettoOrologio()
     {
         if (spriteLancettaOre)
@@ -54,6 +53,13 @@ public class Orologio : MonoBehaviour
             renderer.sprite = spriteCentroOrologio;
         }
     }
+
+    // *** PUBLIC METHODS ***
+    /// <summary>
+    /// Dandogli numero intero di ore e minuti, setta l'orologio sulla giusta posizione.
+    /// </summary>
+    /// <param name="ore">ore, espresse come int maggiore di 0</param>
+    /// <param name="minuti">minuti, espressi come int maggiore di 0</param>
     public void SetOrario(int ore, int minuti)
     {
         float angoloLancettaOre = (ore * lancettaOre.GradiPerScattoLancetta) 
@@ -63,4 +69,16 @@ public class Orologio : MonoBehaviour
         float angoloLancettaMinuti = minuti * lancettaMinuti.GradiPerScattoLancetta;
         lancettaMinuti.SetAngoloLancetta(angoloLancettaMinuti);
     }
+    /// <summary>
+    /// Ritorna l'orario corrente dell'orologio. Le ore sono in formato 12-11, non 0-24.
+    /// </summary>
+    /// <returns>Un array di due int: il primo sono le ore, il secondo i minuti</returns>
+    public int[] GetOrario()
+    {
+        int[] orario = new int[2];
+        orario[0] = lancettaOre.GetValoreInteroCorrente();
+        orario[1] = lancettaMinuti.GetValoreInteroCorrente();
+        return orario;
+    }
+
 }
