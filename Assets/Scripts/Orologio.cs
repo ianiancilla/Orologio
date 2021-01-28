@@ -18,7 +18,9 @@ public class Orologio : MonoBehaviour
     [SerializeField] Color coloreLancettaMinuti = Color.green;
 
     // member variables
+    [HideInInspector]
     public Lancetta lancettaOre;
+    [HideInInspector]
     public Lancetta lancettaMinuti;
 
     // Start is called before the first frame update
