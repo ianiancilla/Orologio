@@ -9,13 +9,18 @@ public class Orologio : MonoBehaviour
     const string NOME_LANCETTA_MINUTI = "LancettaMinuti";
     const string NOME_CENTRO_OROLOGIO = "CentroOrologio";
 
-
+    [Header("Veste grafica")]
     [SerializeField] Sprite spriteQuadrante;
     [SerializeField] Sprite spriteLancettaOre;
     [SerializeField] Sprite spriteLancettaMinuti;
     [SerializeField] Sprite spriteCentroOrologio;
     [SerializeField] Color coloreLancettaOre = Color.red;
     [SerializeField] Color coloreLancettaMinuti = Color.green;
+
+    [Header("Funzionamento")]
+    [SerializeField] bool trascinamentoLancettaOre = false;
+    [SerializeField] bool trascinamentoLancettaMinuti = false;
+
 
     // member variables
     [HideInInspector]
@@ -31,6 +36,9 @@ public class Orologio : MonoBehaviour
         lancettaMinuti = transform.Find(NOME_LANCETTA_MINUTI).GetComponent<LancettaMinuti>();
 
         SetupAspettoOrologio();
+
+        SetTrascinamentoOre(trascinamentoLancettaOre);
+        SetTrascinamentoMinuti(trascinamentoLancettaMinuti);
     }
 
     private void SetupAspettoOrologio()
@@ -71,6 +79,7 @@ public class Orologio : MonoBehaviour
         float angoloLancettaMinuti = minuti * lancettaMinuti.GradiPerScattoLancetta;
         lancettaMinuti.SetAngoloLancetta(angoloLancettaMinuti);
     }
+
     /// <summary>
     /// Ritorna l'orario corrente dell'orologio. Le ore sono in formato 12-11, non 0-24.
     /// </summary>
@@ -83,4 +92,23 @@ public class Orologio : MonoBehaviour
         return orario;
     }
 
+    /// <summary>
+    /// Setta la modalità della lancetta delle ore (trascinabile o fissa)
+    /// </summary>
+    /// <param name="trascinabili">true se la lancetta deve essere trascinabile</param>
+    public void SetTrascinamentoOre(bool trascinabili)
+    {
+        trascinamentoLancettaOre = trascinabili;
+        lancettaOre.trascinabile = trascinabili;
+    }
+
+    /// <summary>
+    /// Setta la modalità della lancetta dei minuti (trascinabile o fissa)
+    /// </summary>
+    /// <param name="trascinabili">true se la lancetta deve essere trascinabile</param>
+    public void SetTrascinamentoMinuti(bool trascinabili)
+    {
+        trascinamentoLancettaMinuti = trascinabili;
+        lancettaMinuti.trascinabile = trascinabili;
+    }
 }

@@ -4,10 +4,14 @@ using UnityEngine;
 
 public abstract class Lancetta : MonoBehaviour
 {
-    protected float _angoloCorrente;
     protected bool stoVenendoTrascinata = false;
+    protected virtual int ValoreAngoloGiro { get { return 0; } }
     public abstract int GradiPerScattoLancetta { get; }
     public abstract int NumeroScattiSuOrologio { get; }
+
+    [HideInInspector]
+    public bool trascinabile = false;
+    protected float _angoloCorrente;
 
     // cache
     public Orologio orologio;
@@ -22,10 +26,12 @@ public abstract class Lancetta : MonoBehaviour
     }
     protected void Update()
     {
+        if (! trascinabile) { return; }
         GestisciFineTrascinamento();
     }
     protected void OnMouseDrag()
     {
+        if (!trascinabile) { return; }
         stoVenendoTrascinata = true;
         SeguiMouse();
     }
@@ -38,6 +44,7 @@ public abstract class Lancetta : MonoBehaviour
             if (Input.GetMouseButtonUp(0))    // TODO funziona solo con il mouse, trovare alternativa
             {
                 stoVenendoTrascinata = false;
+                ArrotondaAScattoPiuVicino();
                 orologio.SetOrario(orologio.lancettaOre.GetValoreInteroCorrente(),
                                    orologio.lancettaMinuti.GetValoreInteroCorrente());
             }
@@ -49,12 +56,13 @@ public abstract class Lancetta : MonoBehaviour
         Vector3 posizioneMouseRaw = Input.mousePosition;    // TODO funziona solo con il mouse, trovare alternativa
         Vector3 posizioneMouseScena = Camera.main.ScreenToWorldPoint(posizioneMouseRaw);
 
-        Vector2 direzioneMouse = new Vector2(posizioneMouseScena.x,
-                                             posizioneMouseScena.y).normalized;
+        Vector2 direzioneMouse = new Vector2(posizioneMouseScena.x - orologio.transform.position.x,
+                                             posizioneMouseScena.y - orologio.transform.position.y).normalized;
 
-        // Trova angolo di rotazione sull#asse Z per l'oggetto.
+        // Trova angolo di rotazione sull'asse Z per l'oggetto.
         // Lo fa usando il il fatto che il valore Y è uguale al seno dell'angolo conmpreso tra asse X e vettore posizione.
         float targetRotazioneZ;
+
         if (direzioneMouse.x > 0)
         {
             targetRotazioneZ = Mathf.Asin(direzioneMouse.y) * Mathf.Rad2Deg;
@@ -112,7 +120,7 @@ public abstract class Lancetta : MonoBehaviour
     {
         // check che sia inferiore a 360°
         nuovoAngolo = nuovoAngolo % 360;
-        if (nuovoAngolo == 0) { nuovoAngolo = 360; }
+        if (nuovoAngolo == 0) { nuovoAngolo = ValoreAngoloGiro; }
 
         _angoloCorrente = nuovoAngolo;
 

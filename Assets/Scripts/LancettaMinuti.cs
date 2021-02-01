@@ -13,4 +13,8 @@ public class LancettaMinuti : Lancetta
         base.SeguiMouse();
         ArrotondaAScattoPiuVicino();
     }
+    public override void SetAngoloLancetta(float nuovoAngolo)
+    {
+        base.SetAngoloLancetta(nuovoAngolo);
+    }
 }
