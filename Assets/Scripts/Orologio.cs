@@ -20,6 +20,7 @@ public class Orologio : MonoBehaviour
     [Header("Funzionamento")]
     [SerializeField] bool trascinamentoLancettaOre = false;
     [SerializeField] bool trascinamentoLancettaMinuti = false;
+    [SerializeField] public bool orologioContinuo = true;
 
     public enum PrecisioneMinuti { uno=1, cinque=5, quindici=15, trenta=30}
     [SerializeField] public PrecisioneMinuti precisioneMinuti = PrecisioneMinuti.uno;

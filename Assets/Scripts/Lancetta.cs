@@ -11,6 +11,7 @@ public abstract class Lancetta : MonoBehaviour
 
     [HideInInspector]
     public bool trascinabile = false;
+    protected float _angoloPrecedente;
     protected float _angoloCorrente;
 
     // cache
@@ -50,8 +51,10 @@ public abstract class Lancetta : MonoBehaviour
     }
 
     protected abstract void SistemaLancetteAlRilascio();
+
     protected virtual void SeguiMouse()
     {
+        _angoloPrecedente = _angoloCorrente;
         // determina vettore direzione mouse
         Vector3 posizioneMouseRaw = Input.mousePosition;    // TODO funziona solo con il mouse, trovare alternativa
         Vector3 posizioneMouseScena = Camera.main.ScreenToWorldPoint(posizioneMouseRaw);

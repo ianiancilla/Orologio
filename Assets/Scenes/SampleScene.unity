@@ -332,6 +332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5588dd88d32538f4cb9a9add5c16075e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trascinabile: 0
   orologio: {fileID: 0}
 --- !u!61 &250747835
 BoxCollider2D:
@@ -471,12 +472,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e9e1d2ee97450488795b582ae8b6a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteQuadrante: {fileID: 21300000, guid: d2a296c4bf087c44ea51f3ff503eb535, type: 3}
-  spriteLancettaOre: {fileID: 21300000, guid: dd2fc0996970d0344bfd13c9ff90da5b, type: 3}
-  spriteLancettaMinuti: {fileID: 21300000, guid: dd2fc0996970d0344bfd13c9ff90da5b, type: 3}
-  spriteCentroOrologio: {fileID: 21300000, guid: 5b920875ffaed1e4faefc04604da3e0f, type: 3}
-  coloreLancettaOre: {r: 0.6792453, g: 0.12495552, b: 0.12495552, a: 1}
-  coloreLancettaMinuti: {r: 0.10902457, g: 0.4716981, b: 0.10902457, a: 1}
+  spriteQuadrante: {fileID: 0}
+  spriteLancettaOre: {fileID: 0}
+  spriteLancettaMinuti: {fileID: 0}
+  spriteCentroOrologio: {fileID: 0}
+  coloreLancettaOre: {r: 1, g: 0, b: 0, a: 1}
+  coloreLancettaMinuti: {r: 0, g: 1, b: 0, a: 1}
+  trascinamentoLancettaOre: 0
+  trascinamentoLancettaMinuti: 0
+  orologioContinuo: 1
+  precisioneMinuti: 1
   lancettaOre: {fileID: 0}
   lancettaMinuti: {fileID: 0}
 --- !u!212 &277478940
@@ -592,6 +597,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5588dd88d32538f4cb9a9add5c16075e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trascinabile: 0
   orologio: {fileID: 0}
 --- !u!61 &369023377
 BoxCollider2D:
@@ -646,7 +652,7 @@ Transform:
   m_GameObject: {fileID: 379471939}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.79, y: -0.36, z: 0}
-  m_LocalScale: {x: 1.1104822, y: 1.1104822, z: 1.1104822}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1215522594}
   - {fileID: 866873873}
@@ -723,6 +729,10 @@ MonoBehaviour:
   spriteCentroOrologio: {fileID: 21300000, guid: 5b920875ffaed1e4faefc04604da3e0f, type: 3}
   coloreLancettaOre: {r: 0.6792453, g: 0.12495552, b: 0.12495552, a: 1}
   coloreLancettaMinuti: {r: 0.10902457, g: 0.4716981, b: 0.10902457, a: 1}
+  trascinamentoLancettaOre: 1
+  trascinamentoLancettaMinuti: 1
+  orologioContinuo: 1
+  precisioneMinuti: 15
   lancettaOre: {fileID: 0}
   lancettaMinuti: {fileID: 0}
 --- !u!1 &519420028
@@ -935,6 +945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5588dd88d32538f4cb9a9add5c16075e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trascinabile: 0
   orologio: {fileID: 0}
 --- !u!61 &866873875
 BoxCollider2D:
@@ -1089,6 +1100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf2035605ba55aa4193166e0674ad262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trascinabile: 0
   orologio: {fileID: 0}
 --- !u!61 &940509334
 BoxCollider2D:
@@ -1161,6 +1173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf2035605ba55aa4193166e0674ad262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trascinabile: 0
   orologio: {fileID: 0}
 --- !u!61 &1050515463
 BoxCollider2D:
@@ -1224,6 +1237,10 @@ MonoBehaviour:
   spriteCentroOrologio: {fileID: 21300000, guid: 5b920875ffaed1e4faefc04604da3e0f, type: 3}
   coloreLancettaOre: {r: 0.6792453, g: 0.12495552, b: 0.12495552, a: 1}
   coloreLancettaMinuti: {r: 0.10902457, g: 0.4716981, b: 0.10902457, a: 1}
+  trascinamentoLancettaOre: 1
+  trascinamentoLancettaMinuti: 1
+  orologioContinuo: 1
+  precisioneMinuti: 1
   lancettaOre: {fileID: 0}
   lancettaMinuti: {fileID: 0}
 --- !u!212 &1063475180
@@ -1339,6 +1356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf2035605ba55aa4193166e0674ad262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trascinabile: 0
   orologio: {fileID: 0}
 --- !u!61 &1215522596
 BoxCollider2D:
@@ -1657,6 +1675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf2035605ba55aa4193166e0674ad262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trascinabile: 0
   orologio: {fileID: 0}
 --- !u!61 &1667834814
 BoxCollider2D:
@@ -1893,6 +1912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5588dd88d32538f4cb9a9add5c16075e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trascinabile: 0
   orologio: {fileID: 0}
 --- !u!61 &2041424674
 BoxCollider2D:
@@ -1956,6 +1976,10 @@ MonoBehaviour:
   spriteCentroOrologio: {fileID: 21300000, guid: 5b920875ffaed1e4faefc04604da3e0f, type: 3}
   coloreLancettaOre: {r: 0.6792453, g: 0.12495552, b: 0.12495552, a: 1}
   coloreLancettaMinuti: {r: 0.10902457, g: 0.4716981, b: 0.10902457, a: 1}
+  trascinamentoLancettaOre: 1
+  trascinamentoLancettaMinuti: 1
+  orologioContinuo: 1
+  precisioneMinuti: 1
   lancettaOre: {fileID: 0}
   lancettaMinuti: {fileID: 0}
 --- !u!212 &2044741694
