@@ -44,12 +44,12 @@ public abstract class Lancetta : MonoBehaviour
             if (Input.GetMouseButtonUp(0))    // TODO funziona solo con il mouse, trovare alternativa
             {
                 stoVenendoTrascinata = false;
-                ArrotondaAScattoPiuVicino();
-                orologio.SetOrario(orologio.lancettaOre.GetValoreInteroCorrente(),
-                                   orologio.lancettaMinuti.GetValoreInteroCorrente());
+                SistemaLancetteAlRilascio();
             }
         }
     }
+
+    protected abstract void SistemaLancetteAlRilascio();
     protected virtual void SeguiMouse()
     {
         // determina vettore direzione mouse

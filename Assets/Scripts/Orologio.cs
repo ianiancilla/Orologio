@@ -21,6 +21,8 @@ public class Orologio : MonoBehaviour
     [SerializeField] bool trascinamentoLancettaOre = false;
     [SerializeField] bool trascinamentoLancettaMinuti = false;
 
+    public enum PrecisioneMinuti { uno=1, cinque=5, quindici=15, trenta=30}
+    [SerializeField] public PrecisioneMinuti precisioneMinuti = PrecisioneMinuti.uno;
 
     // member variables
     [HideInInspector]

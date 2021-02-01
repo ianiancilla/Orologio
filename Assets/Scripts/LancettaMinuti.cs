@@ -5,7 +5,7 @@ using UnityEngine;
 public class LancettaMinuti : Lancetta
 {
     public override int NumeroScattiSuOrologio { get { return 60; } }
-    public override int GradiPerScattoLancetta { get { return 360/ NumeroScattiSuOrologio; } }
+    public override int GradiPerScattoLancetta { get { return 360 / NumeroScattiSuOrologio; } }
 
     // *** PRIVATE METHODS ***
     protected override void SeguiMouse()
@@ -13,8 +13,25 @@ public class LancettaMinuti : Lancetta
         base.SeguiMouse();
         ArrotondaAScattoPiuVicino();
     }
-    public override void SetAngoloLancetta(float nuovoAngolo)
+    protected override void SistemaLancetteAlRilascio()
     {
-        base.SetAngoloLancetta(nuovoAngolo);
+        int ampiezzaScatti = (int)orologio.precisioneMinuti;
+        int valoreCorrente = GetValoreInteroCorrente();
+        int scarto = valoreCorrente % ampiezzaScatti;
+        
+        int valoreArrotondato;
+        if (scarto <= ampiezzaScatti / 2)
+        {
+            valoreArrotondato = valoreCorrente - scarto;
+        }
+        else
+        {
+            valoreArrotondato = valoreCorrente
+                                + (ampiezzaScatti - scarto);
+        }
+
+        orologio.SetOrario(orologio.lancettaOre.GetValoreInteroCorrente(),
+                           valoreArrotondato);
     }
+
 }
