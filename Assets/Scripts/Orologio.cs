@@ -114,4 +114,9 @@ public class Orologio : MonoBehaviour
         trascinamentoLancettaMinuti = trascinabili;
         lancettaMinuti.trascinabile = trascinabili;
     }
+
+    private void Update()
+    {
+        Debug.Log("Ore " + GetOrario()[0] + ":" + GetOrario()[1]);
+    }
 }
